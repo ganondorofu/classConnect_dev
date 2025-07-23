@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import React, { useState, useEffect, useMemo, useRef } from 'react';
@@ -183,6 +184,8 @@ export default function InquiriesPage() {
 
   const isLoading = isLoadingInquiries || authLoading || isLoadingClasses;
   const hasError = !!errorInquiries;
+  
+  const title = session?.appAdmin ? "お問い合わせ管理" : "生徒からの問い合わせ";
 
   if (authLoading) {
     return (
@@ -209,7 +212,7 @@ export default function InquiriesPage() {
   return (
     <>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold">お問い合わせ管理</h1>
+        <h1 className="text-2xl font-semibold">{title}</h1>
         {session?.appAdmin && (
             <Combobox
                 options={classes?.map(c => ({ value: c.id, label: `${c.className} (${c.classCode})` })) || []}

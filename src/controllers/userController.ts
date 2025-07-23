@@ -1,4 +1,5 @@
 
+
 'use server';
 import { db } from '@/config/firebase';
 import {
@@ -16,6 +17,7 @@ import type { CustomUser } from '@/models/user';
 import type { ClassMetadata } from '@/models/class';
 import { logAction } from '@/services/logService';
 import { prepareStateForLog } from '@/lib/logUtils';
+import { getTimetableSettings } from './timetableController'; // Import for initialization
 
 // --- App Admin ---
 // This is now defined in AuthContext, but kept here for type reference if needed.
@@ -112,6 +114,11 @@ export const createClass = async (className: string, classCode: string): Promise
         classCode,
         classId: classId, // Store the generated ID here
     });
+
+    // Initialize the default timetable settings for the new class
+    // This function will create the document with defaults if it doesn't exist.
+    await getTimetableSettings(classId);
+
 
     return classId;
 };
