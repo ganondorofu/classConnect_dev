@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useMemo } from 'react';
@@ -31,7 +32,7 @@ interface UserRowData {
   error?: string;
 }
 
-type SortKey = keyof CustomUser | null;
+type SortKey = keyof CustomUser | 'displayName' | 'username' | 'role' | null;
 type SortDirection = 'asc' | 'desc';
 
 const generateRandomString = (length: number): string => {
@@ -72,8 +73,8 @@ function UserManagementPanel() {
     const sortedUsers = useMemo(() => {
         if (!users || !sortKey) return users;
         return [...users].sort((a, b) => {
-            const valA = a[sortKey];
-            const valB = b[sortKey];
+            const valA = a[sortKey as keyof CustomUser];
+            const valB = b[sortKey as keyof CustomUser];
             if (valA === undefined || valB === undefined) return 0;
             const comparison = String(valA).localeCompare(String(valB), 'ja');
             return sortDirection === 'asc' ? comparison : -comparison;
@@ -488,7 +489,7 @@ export function DevDashboard() {
                                     <Label className="font-medium">管理者アカウント</Label>
                                     <div className="grid grid-cols-3 items-center gap-2">
                                         <Label htmlFor="admin-count" className="text-sm">人数</Label>
-                                        <Input id="admin-count" type="number" value={adminCount} onChange={(e) => setAdminCount(parseInt(e.target.value, 10))} className="col-span-2 h-8" />
+                                        <Input id="admin-count" type="number" value={adminCount} onChange={(e) => setAdminCount(parseInt(e.target.value, 10) || 0)} className="col-span-2 h-8" />
                                     </div>
                                     <div className="grid grid-cols-3 items-center gap-2">
                                         <Label htmlFor="admin-username" className="text-sm">ユーザー名</Label>
@@ -503,7 +504,7 @@ export function DevDashboard() {
                                     <Label className="font-medium">学生アカウント</Label>
                                     <div className="grid grid-cols-3 items-center gap-2">
                                         <Label htmlFor="student-count" className="text-sm">人数</Label>
-                                        <Input id="student-count" type="number" value={studentCount} onChange={(e) => setStudentCount(parseInt(e.target.value, 10))} className="col-span-2 h-8" />
+                                        <Input id="student-count" type="number" value={studentCount} onChange={(e) => setStudentCount(parseInt(e.target.value, 10) || 0)} className="col-span-2 h-8" />
                                     </div>
                                     <div className="grid grid-cols-3 items-center gap-2">
                                         <Label htmlFor="student-username" className="text-sm">ユーザー名</Label>
