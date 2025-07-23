@@ -1,4 +1,5 @@
 
+
 import type { Timestamp } from 'firebase/firestore';
 
 /**
@@ -121,15 +122,15 @@ export function getDayOfWeekName(day: DayOfWeek): string {
     return day; // Already in Japanese
 }
 
-// Default settings
+// Default settings based on the provided image
 export const DEFAULT_TIMETABLE_SETTINGS: TimetableSettings = {
   numberOfPeriods: 7,
   activeDays: [...ConfigurableWeekDays, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY], 
   studentPermissions: {
-    canEditAssignments: false,
+    canEditTimeSlots: true,
     canEditGeneralAnnouncements: false,
-    canEditTimeSlots: true, // Default to true as it's a core feature
     canUseAiSummary: true,
+    canEditAssignments: true,
     canEditSubjects: false,
     canAddSchoolEvents: false,
     canSubmitInquiries: true,

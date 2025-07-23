@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import Link from 'next/link';
@@ -45,7 +46,7 @@ const conditionalLinks = {
 const classAdminLinks = [
   { href: '/admin/subjects', label: '科目管理', icon: BookMarked },
   { href: '/admin/settings', label: '時間割設定', icon: Settings },
-  { href: '/admin/inquiries', label: '問い合わせ管理', icon: ShieldQuestion },
+  { href: '/admin/inquiries', label: '生徒からの問い合わせ', icon: ShieldQuestion },
   { href: '/admin/logs', label: '変更履歴', icon: History },
 ];
 
