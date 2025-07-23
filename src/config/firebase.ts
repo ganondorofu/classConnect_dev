@@ -4,12 +4,13 @@ import { getFirestore, Firestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCP0_WLGL8vG97sDnjn0E2vL2mipwrJP5o",
-  authDomain: "classconnect-5f2on.firebaseapp.com",
-  projectId: "classconnect-5f2on",
-  storageBucket: "classconnect-5f2on.firebasestorage.app",
-  messagingSenderId: "970804383570",
-  appId: "1:970804383570:web:d36ade4609db8d1503348b"
+  apiKey: "AIzaSyCauyaA79i0riPLnEQm_J7tovQ_5eFCHFg",
+  authDomain: "classconnect-dev.firebaseapp.com",
+  projectId: "classconnect-dev",
+  storageBucket: "classconnect-dev.firebasestorage.app",
+  messagingSenderId: "624064847581",
+  appId: "1:624064847581:web:e60c49ad94a14e8edc0534",
+  measurementId: "G-SFLS9ZPDDM"
 };
 
 // Define which environment variables are critical for startup IF firebaseConfig is not hardcoded
