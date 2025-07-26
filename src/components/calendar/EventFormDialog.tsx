@@ -43,8 +43,10 @@ interface EventFormDialogProps {
 
 export default function EventFormDialog({ isOpen, onOpenChange, onEventSaved, editingEvent }: EventFormDialogProps) {
   const { toast } = useToast();
-  const { user } = useAuth();
+  const { session } = useAuth(); // Correctly use session from useAuth
   const queryClient = useQueryClient();
+  const classId = session?.customUser?.classId;
+  const userIdForLog = session?.appAdmin?.uid ?? session?.customUser?.id ?? 'system_event_op';
 
   const { register, handleSubmit, control, reset, setValue, watch, formState: { errors } } = useForm<EventFormData>({
     resolver: zodResolver(eventSchema),
@@ -81,7 +83,7 @@ export default function EventFormDialog({ isOpen, onOpenChange, onEventSaved, ed
 
   const addMutation = useMutation({
     mutationFn: (newEvent: Omit<SchoolEvent, 'id' | 'createdAt' | 'updatedAt'> & { startDate: string; endDate?: string }) =>
-      addSchoolEvent(newEvent, user?.uid ?? 'admin_user_calendar_event_add'),
+      addSchoolEvent(classId!, newEvent, userIdForLog),
     onSuccess: async () => {
       toast({ title: "成功", description: "新しい行事を追加しました。" });
       await onEventSaved();
@@ -94,7 +96,7 @@ export default function EventFormDialog({ isOpen, onOpenChange, onEventSaved, ed
 
   const updateMutation = useMutation({
     mutationFn: (eventToUpdate: SchoolEvent) =>
-      updateSchoolEvent(eventToUpdate, user?.uid ?? 'admin_user_calendar_event_update'),
+      updateSchoolEvent(classId!, eventToUpdate, userIdForLog),
     onSuccess: async () => {
       toast({ title: "成功", description: "行事を更新しました。" });
       await onEventSaved();
@@ -106,6 +108,11 @@ export default function EventFormDialog({ isOpen, onOpenChange, onEventSaved, ed
   });
 
   const onSubmit = (data: EventFormData) => {
+    if (!classId) {
+      toast({ title: "エラー", description: "クラス情報が見つかりません。", variant: "destructive" });
+      return;
+    }
+    
     const formattedData = {
       title: data.title,
       startDate: format(data.startDate, 'yyyy-MM-dd'),
@@ -114,8 +121,8 @@ export default function EventFormDialog({ isOpen, onOpenChange, onEventSaved, ed
     };
 
     if (editingEvent && editingEvent.id) {
-      updateMutation.mutate({ 
-        ...editingEvent, 
+      updateMutation.mutate({
+        ...editingEvent,
         ...formattedData,
         createdAt: editingEvent.createdAt ? (editingEvent.createdAt instanceof Date ? editingEvent.createdAt : new Date(editingEvent.createdAt as any)) : new Date(),
       });
@@ -128,7 +135,7 @@ export default function EventFormDialog({ isOpen, onOpenChange, onEventSaved, ed
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => {
-        if (!open && !isMutating) reset(); 
+        if (!open && !isMutating) reset();
         onOpenChange(open);
     }}>
       <DialogContent className="sm:max-w-[425px]">
@@ -229,4 +236,3 @@ export default function EventFormDialog({ isOpen, onOpenChange, onEventSaved, ed
     </Dialog>
   );
 }
-
