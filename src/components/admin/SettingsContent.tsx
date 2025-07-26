@@ -40,7 +40,7 @@ export default function SettingsContent() {
   const [isOverwritingFuture, setIsOverwritingFuture] = useState(false);
   const [liveSubjects, setLiveSubjects] = useState<Subject[]>([]);
   
-  const userIdForLog = session?.customUser?.id ?? 'admin_user_settings';
+  const userIdForLog = session?.customUser?.id ?? session?.appAdmin?.uid ?? 'system_settings_op';
 
   useEffect(() => {
     const handleOnline = () => {

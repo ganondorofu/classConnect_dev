@@ -395,7 +395,7 @@ export function TimetableGrid({ classId, currentDate }: TimetableGridProps) {
 
   const handleSaveAnnouncement = async () => {
     if (!selectedSlot || isSaving || !classId) return;
-    if (isOffline || (typeof navigator !== 'undefined' && !navigator.onLine)) {
+    if (isOffline) {
       toast({ title: "オフライン", description: "連絡を保存できません。", variant: "destructive" });
       return;
     }
@@ -417,7 +417,7 @@ export function TimetableGrid({ classId, currentDate }: TimetableGridProps) {
     }
 
     try {
-      const userIdForLog = session?.customUser?.id ?? 'unknown_user';
+      const userIdForLog = session?.customUser?.id ?? session?.appAdmin?.uid ?? 'system_timetable_op';
 
       const announcementData: Omit<DailyAnnouncement, 'id' | 'updatedAt'> = {
         date: selectedSlot.date,
@@ -465,7 +465,7 @@ export function TimetableGrid({ classId, currentDate }: TimetableGridProps) {
 
     setIsSaving(true);
     const { date, period, baseFixedSubjectId } = selectedSlot;
-    const userIdForLog = session?.customUser?.id ?? 'unknown_user';
+    const userIdForLog = session?.customUser?.id ?? session?.appAdmin?.uid ?? 'system_timetable_op';
 
     try {
       await upsertDailyAnnouncement(classId, {
@@ -506,7 +506,7 @@ export function TimetableGrid({ classId, currentDate }: TimetableGridProps) {
     }
     setIsSaving(true);
     const { date, period, baseFixedSubjectId } = selectedSlot;
-    const userIdForLog = session?.customUser?.id ?? 'unknown_user';
+    const userIdForLog = session?.customUser?.id ?? session?.appAdmin?.uid ?? 'system_timetable_op';
     try {
       await upsertDailyAnnouncement(classId, {
         date,
@@ -559,7 +559,8 @@ export function TimetableGrid({ classId, currentDate }: TimetableGridProps) {
     });
 
     try {
-      await batchUpsertAnnouncements(classId, announcementsToUpsert, session?.customUser?.id ?? 'unknown_user');
+      const userIdForLog = session?.customUser?.id ?? session?.appAdmin?.uid ?? 'system_bulk_edit';
+      await batchUpsertAnnouncements(classId, announcementsToUpsert, userIdForLog);
       toast({ title: "成功", description: `${announcementsToUpsert.length}件のコマを一括で更新しました。` });
       setIsBulkEditing(false);
       setBulkSelectedSlots(new Set());

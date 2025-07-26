@@ -45,6 +45,7 @@ function SubjectsPageContent() {
 
   const canStudentEdit = settings?.studentPermissions?.canEditSubjects === true;
   const canPerformActions = session?.customUser?.role === 'class_admin' || (session?.customUser?.role === 'student' && canStudentEdit);
+  const userIdForLog = session?.customUser?.id ?? session?.appAdmin?.uid ?? 'system_subjects_op';
 
   useEffect(() => {
     const handleOnline = () => {
@@ -112,7 +113,6 @@ function SubjectsPageContent() {
     });
   };
   
-  const userIdForLog = session?.customUser?.id ?? 'admin_user_subjects';
 
   const addMutation = useMutation({
     mutationFn: ({ name, teacher }: { name: string; teacher: string | null }) => addSubject(classId!, name, teacher, userIdForLog),
