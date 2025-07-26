@@ -1093,4 +1093,3 @@ export const queryFnGetDailyGeneralAnnouncement = (classId: string, date: string
 export const queryFnGetSchoolEvents = (classId: string) => () => getSchoolEvents(classId);
 export const queryFnGetCalendarDisplayableItemsForMonth = (classId: string, year: number, month: number) => () => getCalendarDisplayableItemsForMonth(classId, year, month);
 export const queryFnGetSubjects = getSubjectsFromSubjectController;
-
