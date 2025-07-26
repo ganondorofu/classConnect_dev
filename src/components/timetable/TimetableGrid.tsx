@@ -395,7 +395,7 @@ export function TimetableGrid({ classId, currentDate }: TimetableGridProps) {
 
   const handleSaveAnnouncement = async () => {
     if (!selectedSlot || isSaving || !classId) return;
-    if (isOffline || (typeof navigator !== 'undefined' && navigator.onLine)) {
+    if (isOffline || (typeof navigator !== 'undefined' && !navigator.onLine)) {
       toast({ title: "オフライン", description: "連絡を保存できません。", variant: "destructive" });
       return;
     }
