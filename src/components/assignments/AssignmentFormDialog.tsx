@@ -187,7 +187,7 @@ export default function AssignmentFormDialog({
   }, [watchedDueDate, settings, fixedTimetableData, subjectsMap, queryClientHook, isOpen, classId]);
 
 
-  const userIdForLog = session?.customUser?.id ?? (session?.appAdmin ? session.appAdmin.uid : 'anonymous_assignment_form');
+  const userIdForLog = session?.customUser?.id ?? session?.appAdmin?.uid ?? 'system_assignment_form';
 
   const mutation = useMutation({
     mutationFn: (data: AssignmentFormData) => {
